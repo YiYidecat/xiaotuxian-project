@@ -6,8 +6,20 @@
 </template>
 
 <script>
+import { useStore } from 'vuex'
+import { computed } from 'vue'
+
 export default {
-  name: 'App'
+  name: 'AppTopNav',
+  setup () {
+    // 读取vuex中的用户信息
+    const store = useStore()
+    // profile是一个计算属性
+    const profile = computed(() => {
+      return store.state.user.profile
+    })
+    return { profile }
+  }
 }
 </script>
 
