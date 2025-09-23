@@ -1,6 +1,6 @@
 <template>
    <app-topnav></app-topnav>
-   <app-header></app-header>
+   <App-header></App-header>
    <main>
       <!-- 二级路由 -->
       <RouterView></RouterView>
@@ -10,14 +10,21 @@
 
 <script>
 import appTopnav from '@/components/app-topnav.vue'
-import appHeader from '@/components/app-header.vue'
+import AppHeader from '@/components/app-header.vue'
 import appFooter from '@/components/app-footer.vue'
+import { useStore } from 'vuex'
 
 export default {
   components: {
     appTopnav,
-    appHeader,
+    AppHeader,
     appFooter
+  },
+  // 获取下分类数据
+  setup () {
+    const store = useStore()
+    // store.dispatch语法是Vuex出发actions的方法，通常用于异步处理和操作复杂逻辑，然后通过mutations修改状态（state）
+    store.dispatch('category/getList')
   },
   name: 'XtxLayout'
 }

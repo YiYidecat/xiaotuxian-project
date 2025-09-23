@@ -7,6 +7,9 @@ module.exports = {
     open: true
   },
 
+  // 保存时是否校验
+  lintOnSave: false,
+
   pluginOptions: {
     // 自动注入less变量和mixin
     'style-resources-loader': {
