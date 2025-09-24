@@ -1,13 +1,13 @@
 <template>
   <ul class="app-header-nav">
     <li class="home"><RouterLink to="/">首页</RouterLink></li>
-    <li v-for="item in list" :key="item.id">
-      <RouterLink to="/">{{ item.name }}</RouterLink>
-      <div class="layer">
+    <li v-for="item in list" :key="item.id" @mouseenter="show(item)" @mouseleave="hide(item)">
+      <RouterLink :to="`/category/${item.id}`" @click="hide(item)">{{ item.name }}</RouterLink>
+      <div class="layer" :class="{open:item.open}">
         <ul>
           <li v-for="sub in item.children" :key="sub.id">
-            <RouterLink to="/">
-              <img src="sub.picture" alt="">
+            <RouterLink :to="`/category/sub/${sub.id}`" @click="hide(item)">
+              <img :src="sub.picture" alt="">
               <p>{{ sub.name }}</p>
             </RouterLink>
           </li>
@@ -29,7 +29,14 @@ export default {
     const list = computed(() => {
       return store.state.category.list
     })
-    return { list }
+    // 实现和隐藏一级分类的时候的控制
+    const show = (item) => {
+      store.commit('category/show', item)
+    }
+    const hide = (item) => {
+      store.commit('category/hide', item)
+    }
+    return { list, show, hide }
   }
 }
 </script>
@@ -58,9 +65,11 @@ export default {
         border-bottom: 1px solid @xtxColor;
       }
       // 子分类
-      > .layer {
-        height: 132px;
-        opacity: 1;
+      .layer {
+          &.open{
+            height: 132px;
+            opacity: 1;
+        }
       }
     }
   }
