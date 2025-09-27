@@ -1,8 +1,8 @@
 <!-- 此部分是为了实现首页的头部分类导航交互功能 -->
 <template>
-    <div class="app-header-sticky" :class="{show:isShow}">
+    <div class="app-header-sticky" :class="{show:y>=78}">
         <!-- v-show使用，为了吸顶头部展开的内容不遮住头部导航 -->
-        <div class="container" v-show="isShow">
+        <div class="container" v-show="y>=78">
             <RouterLink class="logo" to="/"/>
             <AppHeaderNav/>
             <div class="right">
@@ -15,25 +15,31 @@
 
 <script>
 import AppHeaderNav from './app-header-nav.vue'
-import { ref } from 'vue'
+// import { ref } from 'vue'
+import { useWindowScroll } from '@vueuse/core'
 
 export default ({
   name: 'AppHeaderSticky',
   components: { AppHeaderNav },
   setup () {
-    const isShow = ref(false)
-    // 浏览器绑定滚动事件
-    window.onscroll = () => {
-    // 获取当前文档滚动出去了多少
-      const scrollTop = document.documentElement.scrollTop
-      // 页面滚动到了78px以上，显示吸顶组件，否则隐藏
-      if (scrollTop >= 78) {
-        isShow.value = true
-      } else {
-        isShow.value = false
-      }
-    }
-    return { isShow }
+    // const isShow = ref(false)
+    // // 浏览器绑定滚动事件
+    // window.onscroll = () => {
+    // // 获取当前文档滚动出去了多少
+    //   const scrollTop = document.documentElement.scrollTop
+    //   // 页面滚动到了78px以上，显示吸顶组件，否则隐藏
+    //   if (scrollTop >= 78) {
+    //     isShow.value = true
+    //   } else {
+    //     isShow.value = false
+    //   }
+    // }
+    // return { isShow }
+
+    // 解构出的y是响应式数据
+    const { y } = useWindowScroll()
+    // 直接返回给模板使用
+    return { y }
   }
 })
 </script>
