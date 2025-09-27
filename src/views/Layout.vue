@@ -1,6 +1,7 @@
 <template>
    <app-topnav></app-topnav>
    <App-header></App-header>
+   <AppHeaderSticky></AppHeaderSticky>
    <main>
       <!-- 二级路由 -->
       <RouterView></RouterView>
@@ -12,13 +13,15 @@
 import appTopnav from '@/components/app-topnav.vue'
 import AppHeader from '@/components/app-header.vue'
 import appFooter from '@/components/app-footer.vue'
+import AppHeaderSticky from '@/components/app-header-sticky.vue'
 import { useStore } from 'vuex'
 
 export default {
   components: {
     appTopnav,
     AppHeader,
-    appFooter
+    appFooter,
+    AppHeaderSticky
   },
   // 获取下分类数据
   setup () {
