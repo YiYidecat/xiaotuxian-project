@@ -1,17 +1,17 @@
 <template>
-        <div class="home-category">
-        <ul class="menu">
-            <!-- 定义一个数据记录当前鼠标经过分类的ID，使用计算属性得到当前的分类推荐商品数据 -->
-            <li v-for="item in menuList" :key="item.id" @mouseenter="categoryId=item.id">
-                <RouterLink to="/">居家</RouterLink>
-                <RouterLink to="/">洗漱</RouterLink>
-                <RouterLink to="/">清洁</RouterLink>
-            </li>
-        </ul>
-    </div>
+  <!-- 品牌数据需要请求后台，再汇总到所有数据当中，然后渲染，然后激活当前的分类（class="{active:categoryId === item.id}"） -->
+  <div class="home-category" @mouseleave="categoryId = null">
+    <ul class="menu">
+      <!-- 定义一个数据记录当前鼠标经过分类的ID，使用计算属性得到当前的分类推荐商品数据 -->
+      <li :class="{active:categoryId === item.id}" v-for="item in menuList" :key="item.id" @mouseenter="categoryId=item.id">
+          <RouterLink to="/">居家</RouterLink>
+          <RouterLink to="/">洗漱</RouterLink>
+          <RouterLink to="/">清洁</RouterLink>
+      </li>
+    </ul>
     <!-- 弹层 -->
     <div class="layer">
-      <h4>分类推荐 <small>根据您的购买或浏览记录推荐</small></h4>
+      <h4 v-if="currCategory">{{currCategory.id==='brand'?'品牌':'分类'}}推荐 <small>根据您的购买或浏览记录推荐</small></h4>
       <ul v-if="currCategory && currCategory.children && currCategory.children.length">
         <li v-for="item in currCategory.children" :key="item.id">
           <RouterLink to="/">
@@ -24,12 +24,27 @@
           </RouterLink>
         </li>
       </ul>
+      <!-- 处理品牌布局渲染 -->
+      <ul v-if="currCategory && currCategory.brands && currCategory.brands.length">
+        <li class="brand" v-for="item in currCategory.brands" :key="item.id">
+          <RouterLink to="/">
+            <img :src="item.picture" alt="">
+            <div class="info">
+              <p class="place"><i class="iconfont icon-dingwei"></i>{{ item.place }}</p>
+              <p class="name ellipsis">{{ item.name }}</p>
+              <p class="desc ellipsis-2">{{ item.desc }}</p>
+            </div>
+          </RouterLink>
+        </li>
+      </ul>
     </div>
+  </div>
 </template>
 
 <script>
 import { useStore } from 'vuex'
 import { reactive, computed, ref } from 'vue'
+import { findBrand } from '@/apis/home.js'
 
 export default {
   name: 'HomeCategory',
@@ -39,7 +54,8 @@ export default {
     const brand = reactive({
       id: 'brand',
       name: '品牌',
-      children: [{ id: 'brand-children', name: '品牌推荐' }]
+      children: [{ id: 'brand-children', name: '品牌推荐' }],
+      brands: []
     })
 
     // 需要在组件内部定义一个品牌数据
@@ -62,8 +78,14 @@ export default {
     const currCategory = computed(() => {
       return menuList.value.find(item => item.id === categoryId.value)
     })
-    console.log('menuList是', menuList)
-    console.log('currCategory是', currCategory)
+
+    // console.log('menuList是', menuList)
+    // console.log('currCategory是', currCategory)
+
+    findBrand().then(data => {
+      brand.brands = data.result
+    })
+    console.log('brand是', brand)
     return { menuList, categoryId, currCategory }
   }
 }
@@ -81,7 +103,7 @@ export default {
       padding-left: 40px;
       height: 50px;
       line-height: 50px;
-      &:hover {
+      &:hover, &.active {
         background: @xtxColor;
       }
       a {
@@ -98,7 +120,7 @@ export default {
       display: block;
     }
   }
- .layer {
+  .layer {
     width: 990px;
     height: 500px;
     background: rgba(255,255,255,0.8);
@@ -119,6 +141,24 @@ export default {
     ul {
       display: flex;
       flex-wrap: wrap;
+       li.brand {
+        height: 180px;
+        a {
+          align-items: flex-start;
+          img {
+            width: 120px;
+            height: 160px;
+          }
+          .info {
+            p {
+              margin-top: 8px;
+            }
+            .place {
+              color: #999;
+            }
+          }
+        }
+      }
       li {
         width: 310px;
         height: 120px;
