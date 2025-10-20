@@ -4,11 +4,31 @@
     <ul class="menu">
       <!-- 定义一个数据记录当前鼠标经过分类的ID，使用计算属性得到当前的分类推荐商品数据 -->
       <li :class="{active:categoryId === item.id}" v-for="item in menuList" :key="item.id" @mouseenter="categoryId=item.id">
+        <RouterLink :to="`/category/${item.id}`">{{item.name}}</RouterLink>
+        <template v-if="item.children">
+          <RouterLink
+            v-for="sub in item.children"
+            :key="sub.id"
+            :to="`/category/sub/${sub.id}`">
+            {{sub.name}}
+          </RouterLink>
+        </template>
+        <template v-if="!item.children">
+          <XtxSkeleton width="60px" height="18px" style="margin-right:5px" bg="rgba(255,255,255,0.2)" />
+          <XtxSkeleton width="50px" height="18px" bg="rgba(255,255,255,0.2)" />
+        </template>
+      </li>
+    </ul>
+
+    <!-- <ul class="menu">
+      定义一个数据记录当前鼠标经过分类的ID，使用计算属性得到当前的分类推荐商品数据
+      <li :class="{active:categoryId === item.id}" v-for="item in menuList" :key="item.id" @mouseenter="categoryId=item.id">
           <RouterLink to="/">居家</RouterLink>
           <RouterLink to="/">洗漱</RouterLink>
           <RouterLink to="/">清洁</RouterLink>
       </li>
-    </ul>
+    </ul> -->
+
     <!-- 弹层 -->
     <div class="layer">
       <h4 v-if="currCategory">{{currCategory.id==='brand'?'品牌':'分类'}}推荐 <small>根据您的购买或浏览记录推荐</small></h4>
@@ -45,6 +65,7 @@
 import { useStore } from 'vuex'
 import { reactive, computed, ref } from 'vue'
 import { findBrand } from '@/apis/home.js'
+import XtxSkeleton from '@/components/library/xtx-skeleton.vue'
 
 export default {
   name: 'HomeCategory',
@@ -79,14 +100,14 @@ export default {
       return menuList.value.find(item => item.id === categoryId.value)
     })
 
-    // console.log('menuList是', menuList)
-    // console.log('currCategory是', currCategory)
+    console.log('menuList是', menuList)
+    console.log('currCategory是', currCategory)
 
     findBrand().then(data => {
       brand.brands = data.result
     })
     console.log('brand是', brand)
-    return { menuList, categoryId, currCategory }
+    return { menuList, categoryId, currCategory, XtxSkeleton }
   }
 }
 </script>

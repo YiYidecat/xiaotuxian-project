@@ -3,7 +3,9 @@
           <div class="home-entry">
             <div class="container">
               <!-- 左侧分类 -->
-              <homeCategory></homeCategory>
+              <homeCategory/>
+              <!-- 轮播图 -->
+              <home-banner/>
             </div>
           </div>
     </div>
@@ -11,10 +13,11 @@
 
 <script>
 import homeCategory from './components/home-category.vue'
+import homeBanner from './components/home-banner.vue'
 
 export default {
   name: 'PageHome',
-  components: { homeCategory }
+  components: { homeCategory, homeBanner }
 }
 </script>
 
