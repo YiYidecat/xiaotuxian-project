@@ -1,4 +1,5 @@
 <template>
+  <!-- 首页入口 -->
     <div class="PageHome">
           <div class="home-entry">
             <div class="container">
