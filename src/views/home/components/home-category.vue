@@ -101,13 +101,13 @@ export default {
       return menuList.value.find(item => item.id === categoryId.value)
     })
 
-    console.log('menuList是', menuList)
-    console.log('currCategory是', currCategory)
+    // console.log('menuList是', menuList)
+    // console.log('currCategory是', currCategory)
 
     findBrand().then(data => {
       brand.brands = data.result
     })
-    console.log('brand是', brand)
+    // console.log('brand是', brand)
     return { menuList, categoryId, currCategory, XtxSkeleton }
   }
 }

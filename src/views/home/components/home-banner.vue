@@ -1,16 +1,26 @@
 <!-- 首页广告组件基础结构 -->
 <template>
     <div class="home-banner">
-        <XtxCarousel/>
+        <XtxCarousel :sliders="list"/>
     </div>
 </template>
 
 <script>
 import XtxCarousel from '@/components/library/xtx-carousel.vue'
+import { ref } from 'vue'
+import { findBanner } from '@/apis/home.js'
 
 export default {
   components: { XtxCarousel },
-  name: 'HomeBanner'
+  name: 'HomeBanner',
+  setup () {
+    const list = ref([])
+    findBanner().then(data => {
+      list.value = data.result
+    })
+    console.log('得到的轮播图的信息有', list)
+    return { list }
+  }
 }
 </script>
 
