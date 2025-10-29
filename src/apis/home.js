@@ -13,3 +13,21 @@ export const findBrand = (limit) => {
 export const findBanner = (distributionSite = 1) => {
   return request('/home/banner', 'get', { distributionSite: distributionSite })
 }
+
+/**
+ * 首页-新鲜好物
+ * @param{*}limit 默认值是4，指定响应数据中商品的数量
+ * @returns
+ */
+export const findNew = (limit = 4) => {
+  return request('/home/new', 'get', { limit: limit })
+}
+
+/**
+ * 首页-人气推荐
+ * @param 无请求参数
+ * @returns
+ */
+export const RecommendHot = () => {
+  return request('/home/hot', 'get')
+}

@@ -18,7 +18,7 @@ export default {
     findBanner().then(data => {
       list.value = data.result
     })
-    console.log('得到的轮播图的信息有', list)
+    // console.log('得到的轮播图的信息有', list)
     return { list }
   }
 }

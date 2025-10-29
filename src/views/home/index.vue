@@ -9,16 +9,22 @@
               <home-banner/>
             </div>
           </div>
+          <!-- 新鲜好物 -->
+          <homeNew/>
+          <!-- 人气推荐 -->
+          <homeHot/>
     </div>
 </template>
 
 <script>
 import homeCategory from './components/home-category.vue'
 import homeBanner from './components/home-banner.vue'
+import homeNew from './components/home-new.vue'
+import homeHot from './components/home-hot.vue'
 
 export default {
   name: 'PageHome',
-  components: { homeCategory, homeBanner }
+  components: { homeCategory, homeBanner, homeNew, homeHot }
 }
 </script>
 
