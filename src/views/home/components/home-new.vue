@@ -1,10 +1,11 @@
 <template>
     <div class="home-new">
-        <homePanel title="新鲜好物" sub-title="新鲜出炉 品质靠谱">
+        <homePanel ref="target" title="新鲜好物" sub-title="新鲜出炉 品质靠谱">
          <!-- 具名插槽 -->
           <template #right><XtxMore path="/"/></template>
-         <!-- 默认插槽 - 面板内容 -->
-             <ul class="goods-list">
+            <Transition name="fade">
+              <!-- 默认插槽 - 面板内容 -->
+             <ul v-if="list.length" ref="pannel" class="goods-list">
                 <li v-for="item in list" :key="item.id">
                   <RouterLink to="/">
                   <img :src="item.picture" alt="" />
@@ -13,6 +14,8 @@
                   </RouterLink>
                 </li>
              </ul>
+             <home-skeleton v-else/>
+            </Transition>
         </homePanel>
     </div>
 </template>
@@ -21,18 +24,20 @@
 import homePanel from './home-panel.vue'
 import { findNew } from '@/apis/home.js'
 import XtxMore from '@/components/library/xtx-more.vue'
-import { ref } from 'vue'
+// import { ref } from 'vue'
+import HomeSkeleton from './home-skeleton.vue'
+import { useLazyData } from '@/hooks'
 
 export default {
-  components: { homePanel, XtxMore },
+  components: { homePanel, XtxMore, HomeSkeleton },
   name: 'HomeNew',
   setup () {
-    const list = ref([])
-    findNew().then(({ result }) => {
-      list.value = result
-    })
+    const { target, list } = useLazyData(findNew)
+    // findNew().then(({ result }) => {
+    //   list.value = result
+    // })
     // console.log('新鲜好物的商品信息是', list)
-    return { list }
+    return { target, list }
   }
 }
 </script>

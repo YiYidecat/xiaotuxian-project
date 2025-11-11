@@ -1,6 +1,7 @@
 <template>
-  <homePanel title="人气推荐" sub-title="人气爆款 不容错过">
-    <ul ref="pannel" class="goods-list">
+  <homePanel ref="target" title="人气推荐" sub-title="人气爆款 不容错过">
+    <Transition name="fade">
+      <ul v-if="list.length" ref="pannel" class="goods-list">
       <li v-for="item in list" :key="item.id">
         <RouterLink to="/">
           <img :src="item.picture" alt="">
@@ -9,24 +10,29 @@
         </RouterLink>
       </li>
     </ul>
+    <home-skeleton v-else/>
+    </Transition>
   </homePanel>
 </template>
 
 <script>
 import homePanel from './home-panel.vue'
 import { RecommendHot } from '@/apis/home.js'
-import { ref } from 'vue'
+// import { ref } from 'vue'
+import HomeSkeleton from './home-skeleton.vue'
+import { useLazyData } from '@/hooks'
 
 export default {
-  components: { homePanel },
+  components: { homePanel, HomeSkeleton },
   name: 'HomeHot',
   setup () {
-    const list = ref([])
-    RecommendHot().then(({ result }) => {
-      list.value = result
-    })
+    // 使用懒加载函数来实现，target是目标响应式函数
+    const { target, list } = useLazyData(RecommendHot)
+    // RecommendHot().then(({ result }) => {
+    //   list.value = result
+    // })
     // console.log('人气推荐', list)
-    return { list }
+    return { target, list }
   }
 }
 </script>
