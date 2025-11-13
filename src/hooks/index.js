@@ -20,6 +20,7 @@ export const useLazyData = (apiFn) => {
         // 调用API获取数据
         apiFn().then(({ result }) => {
           list.value = result
+          console.log('接口获取到的数据是', list)
         })
         stop()
       }

@@ -31,3 +31,12 @@ export const findNew = (limit = 4) => {
 export const RecommendHot = () => {
   return request('/home/hot', 'get')
 }
+
+/**
+ * 首页-热门品牌
+ * @param{*}limit 默认值是4，指定响应数据中商品的数量
+ * @returns
+ */
+export const findHotBrand = (limit = 4) => {
+  return request('/home/brand', 'get', { limit: limit })
+}
