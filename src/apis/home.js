@@ -40,3 +40,12 @@ export const RecommendHot = () => {
 export const findHotBrand = (limit = 4) => {
   return request('/home/brand', 'get', { limit: limit })
 }
+
+/**
+ * 首页-商品区块
+ * @param 无请求参数
+ * @returns
+ */
+export const GetGoods = () => {
+  return request('/home/goods', 'get')
+}

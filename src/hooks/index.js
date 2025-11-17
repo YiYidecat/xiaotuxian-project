@@ -16,7 +16,7 @@ export const useLazyData = (apiFn) => {
     ([{ isIntersecting }]) => {
       // 如果元素可以，发送请求获取数据，并停止检测避免重复发送请求
       if (isIntersecting) {
-        console.log(target.value, '元素可以发送请求了.....')
+        // console.log(target.value, '元素可以发送请求了.....')
         // 调用API获取数据
         apiFn().then(({ result }) => {
           list.value = result
@@ -24,7 +24,9 @@ export const useLazyData = (apiFn) => {
         })
         stop()
       }
-    }
+    },
+    // threshold 容器和可视区交叉的占比（进入的面积/容器完整面试） 取值，0-1 之间，默认比0大，所以需要滚动较多才能触发进入可视区域事件
+    { threshold: [0] }
   )
   // 钩子函数返回---> 响应式数据（目标元素、后台元素）
   return { list, target }

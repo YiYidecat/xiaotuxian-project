@@ -4,6 +4,7 @@
       <a @click="activeIndex = 0" :class="{ disabled: activeIndex === 0  }" href="javascript:;" class="iconfont icon-angle-left prev"></a>
       <a @click="activeIndex = 1" :class="{ disabled: activeIndex === 1  }" href="javascript:;" class="iconfont icon-angle-right next"></a>
     </template>
+    <!-- 从这里开始作为懒加载组件的视图判定区域（<div ref="box" class="box"> ... </div>） -->
     <div class="box" ref="box">
         <Transition name="fade">
            <ul v-if="list.length" class="list" :style="`transform: translateX(${ activeIndex ? '-50%' : 0 });`">
@@ -27,21 +28,20 @@ import HomePanel from './home-panel'
 import { findHotBrand } from '@/apis/home.js'
 // import { useLazyData } from '@/hooks'
 import xtxSkeleton from '@/components/library/xtx-skeleton.vue'
+import { useIntersectionObserver } from '@vueuse/core'
 
 export default {
   name: 'HomeBrand',
   components: { HomePanel, xtxSkeleton },
   setup () {
-    // 获取数据
-    const list = ref([])
-    findHotBrand(10).then(data => {
-      list.value = data.result
-    })
+    // // 无懒加载方式获取数据
+    // const list = ref([])
+    // findHotBrand(10).then(data => {
+    //   list.value = data.result
+    //   console.log('接口获取到的数据是', list)
+    // })
 
-    // 切换效果，前提只有 0 1 两页
-    const activeIndex = ref(0)
-
-    // // 调用懒加载函数
+    // // 调用懒加载函数useLazyData实现懒加载
     // const { brands, target } = useLazyData(findHotBrand)
     // // 用于切换的下标
     // const activeIndex = ref(0)
@@ -50,9 +50,31 @@ export default {
 
     // // 切换效果，前提只有 0 1 两页
     // const activeIndex = ref(0)
-    console.log('Vue获取到的数据是', list)
 
-    return { list, activeIndex }
+    // 由于在列表div当中使用<div ref="box" class="box"> ... </div>来绑定了进入视图的区域，并且命名为box，所以这里就不能使用target作为目标视图了，改名为box即可
+    const box = ref(null)
+    const list = ref([])
+    const { stop } = useIntersectionObserver(
+      box,
+      ([{ isIntersecting }]) => {
+      // 如果元素可以，发送请求获取数据，并停止检测避免重复发送请求
+        if (isIntersecting) {
+          // console.log(box.value, '元素可以发送请求了.....')
+          // 调用API获取数据
+          findHotBrand(10).then(data => {
+            list.value = data.result
+            // console.log('接口获取到的数据是', list)
+          })
+          stop()
+        }
+      }
+    )
+
+    // 切换效果，前提只有 0 1 两页
+    const activeIndex = ref(0)
+    // console.log('Vue获取到的数据是', list)
+
+    return { list, box, activeIndex }
   }
 }
 </script>
