@@ -49,3 +49,12 @@ export const findHotBrand = (limit = 4) => {
 export const GetGoods = () => {
   return request('/home/goods', 'get')
 }
+
+/**
+ * 首页-最新专题
+ * @param 无请求参数，limit并非必须
+ * @returns
+ */
+export const GetSpecial = () => {
+  return request('/home/special', 'get')
+}

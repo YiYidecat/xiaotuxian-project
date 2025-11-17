@@ -45,4 +45,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 5. 总的对以上store来说，就是先是在request.js当中创建网络接口方式 -> 然后在apis当中封装请求数据接口 -> 然后在store文件夹下面完成某一类（比如商品类型category）数据的格式、获取方式、修改方式
    的设置并使用import { createStore } from 'vuex'完成注册 -> 然后在需要用到这个store下的数据请求的Vue页面下使用import { useStore } from 'vuex'完成对store的调用
 
-6. 
+6. 其他的Vue页面的展示都是通过（1）路由配置（2）组件嵌套的方式，来进行展示的

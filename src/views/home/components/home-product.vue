@@ -38,7 +38,7 @@ export default {
   components: { homePanel, homeGoods, XtxMore },
   setup () {
     const { target, list } = useLazyData(GetGoods)
-    console.log('产品信息获取到的数据是', list)
+    // console.log('产品信息获取到的数据是', list)
     return { target, list }
   }
 }

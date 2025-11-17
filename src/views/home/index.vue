@@ -17,6 +17,8 @@
           <homeBrand/>
           <!-- 商品区域 -->
           <home-product/>
+          <!-- 最新专题 -->
+           <HomeSpecial/>
     </div>
 </template>
 
@@ -27,10 +29,11 @@ import homeNew from './components/home-new.vue'
 import homeHot from './components/home-hot.vue'
 import homeBrand from './components/home-brand.vue'
 import homeProduct from './components/home-product.vue'
+import HomeSpecial from './components/home-special.vue'
 
 export default {
   name: 'PageHome',
-  components: { homeCategory, homeBanner, homeNew, homeHot, homeBrand, homeProduct }
+  components: { homeCategory, homeBanner, homeNew, homeHot, homeBrand, homeProduct, HomeSpecial }
 }
 </script>
 
