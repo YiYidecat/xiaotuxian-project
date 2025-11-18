@@ -7,3 +7,10 @@ import request from '@/utils/request'
 export const findAllCategory = () => {
   return request('/home/category/head', 'get')
 }
+
+/**
+ * 获取商品分类数据当中的一级类目
+ */
+export const findTopCategory = (id) => {
+  return request('/category', 'get', { id: id })
+}
