@@ -46,3 +46,5 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
    的设置并使用import { createStore } from 'vuex'完成注册 -> 然后在需要用到这个store下的数据请求的Vue页面下使用import { useStore } from 'vuex'完成对store的调用
 
 6. 其他的Vue页面的展示都是通过（1）路由配置（2）组件嵌套的方式，来进行展示的
+   
+7. src -> components 文件夹里存放的都是一些静态资源
